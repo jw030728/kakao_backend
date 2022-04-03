@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
   const existFriend = await Friend.findOne({
     where: {
       userId: user.id,
-      friend: friendUser.id,
+      friendId: friendUser.id,
     },
   });
   if (existFriend) {
@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
   }
   await Friend.create({
     userId: user.id,
-    friend: friendUser.id,
+    friendId: friendUser.id,
   });
   return res.status(201).json();
 });
@@ -81,6 +81,7 @@ router.get("/:userId", async (req, res) => {
   }
 
   const friends = await user.$get("myFriends", {
+    // include써야지 eager로딩 다 불러옴
     include: [
       {
         model: User,
